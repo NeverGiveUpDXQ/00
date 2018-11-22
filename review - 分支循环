@@ -1,0 +1,130 @@
+#分支
+##条件表达式就是计算结果必须为布尔值的表达式
+###单向分支
+'''
+if条件表达式：
+    语句1
+    语句2
+    语句x
+'''
+#⚠️表达式后面的冒号不能少
+#注意if后面出现的语句，如果属于if语句块，则必须同一个缩紧等级
+#条件表达式结果为True执行if后面的缩紧的语句块
+
+###双向分支【一定会执行else或if中的一个】
+'''
+if条件表达式：
+    语句1
+    语句2
+    语句x
+else：
+    语句1
+    语句x
+'''
+
+#input的作用：
+1.在屏幕上输出括号中的字符串
+2.接受用户输入的内容并返回到程序
+3. input返回的内容一定是字符串类型
+
+gender = input("请输入性别：")
+print("你的性别是：{0}".format(gender))
+
+if gender == 'male':
+  print("hurry up")
+else:
+  print("wait you")
+  
+###多路分支【只执行一个】
+'''
+if 条件表达式：
+  语句1
+  ....
+elif 条件表达式:
+  语句1
+  ....
+elif 条件表达式:
+  语句1
+  ...
+else:
+  语句1
+  ...
+'''
+
+###python没有switch-case语句
+
+#循环语句
+##for循环
+'''
+for 变量 in 序列：
+  语句1
+  语句2
+'''
+###列表就是一列数字或者其他值，一般用中括号表示 ['a','b','c']
+
+for name in ['a','b','c']
+print(name)
+#打印列表中的每一个值👆
+
+#复杂化，如果是'c'则是最爱；如果是其他学生，则冷酷对待
+
+for name in ['a','b','c']:
+  print(name)
+  if name == 'c':
+    print('my love :{0}'.format(name))
+  else:
+    print('Hello,how r u')
+
+###range介绍：生成一个数字序列，具体范围可以设定range(a,b) 包含左边数字不包含右边数字
+###特例randint是特例，左右都包含
+
+#break/continue/pass
+-break无条件结束整个循环
+-continue无条件结束本次循环，重新进入下一轮循环
+-pass表示略过
+
+#[break]practice：在数字1-10中，寻找数字7
+#for循环中的变量表示，一般用i,k,m,n或者indx，idx，item之类；一般也用下划线表示
+for a in range(1,11):
+  if a == 7:
+    print('find it')
+    break
+  else:
+    print(a)
+    
+#[continue]practice:在数字1-10中，寻找并打印偶数
+for _ in range(1,11):
+  if _ % 2 == 0:
+    print(_)
+
+for i in range(1,11):
+  if i % 2 == 1:
+    continue
+  print("{0}是偶数".format(i))
+
+#pass占位，一般没有跳过功能
+for i in range(1,11):
+  pass
+  print("try")
+  
+##while循环 - 只要当条件成立就循环，并不知道循环的次数
+'''
+while 条件表达式：
+  语句块
+---------------
+while 条件表达式:
+   语句块1
+else:
+   语句块2
+'''
+#如果年利率是6.7%，则多少年本钱会翻倍
+i = 6.7%
+a = 1
+year = 0
+while a < 2 :
+  year += 1
+  a = a * (1 + i )
+  print("第{0}年现有{1}钱".format(year,a))
+  
+
+  
