@@ -16,3 +16,8 @@ kc$centers #聚类中心及对应的坐标
 3  0.4384360  1.2499562
 kc$cluster
 qplot(dat[,1],dat[,2],color=kc$cluster)
+
+MORE：https://blog.csdn.net/hfutxiaoguozhi/article/details/78828047
+
+
+#协同过滤简单来说就是利用某兴趣相投，拥有共同经验之群体的喜好来推荐用户感兴趣的信息
