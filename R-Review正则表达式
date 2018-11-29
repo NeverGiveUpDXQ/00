@@ -1,0 +1,165 @@
+正则表达式：正则表达式通常被用来检索、替换那些符合某个模式(规则)的文本
+
+#grep(p,x) 存在参数value，返回结果是匹配项的下标
+#grepl(p,x)存在返回TRUE
+
+> A<-c('123abc456','abc123def')
+> grep("123",A)
+[1] 1 2
+> grepl("123",A)
+[1] TRUE TRUE
+> grep('def',A)
+[1] 2
+> grepl('def',A)
+[1] FALSE  TRUE
+
+#sub(p,replace,x)对查找到的第一个进行替换
+> a<-c('123abc456123','abc123defabc')
+> sub('123','haha',a)
+[1] "hahaabc456123" "abchahadefabc"
+
+#gsub()对查找的所有内容进行替换，返回替换后的text，否则返回text
+> gsub('123','haha',a)
+[1] "hahaabc456haha" "abchahadefabc" 
+
+#常用匹配模式
+\d任何一个数字字符==[0-9]
+\D任何一个非数字字符==[^0-9]
+\w任何一个数字或者字母，下划线
+\W任何一非数字或者字母
+\\转义字符
+
+> A<-c('123abc456','abc123def')
+> grepl('\w',A)
+错误: 由"'\w"开头的字符串中存在'\w'，但没有这种逸出号 #需要两个\
+> grepl('\\w',A)
+[1] TRUE TRUE
+> d<-c("s\\")
+> grepl("\\\\",d)
+[1] TRUE
+
+#其他
+. 匹配任何一个字符
+| 可选择匹配任何一个
+^ 以特定模式开头
+$ 放在末尾，表示特定的结尾模式
+()提取匹配的字符串
+[]里面的表示可选
+{}表达式最多重复次数
+* 匹配0次或者1次以上
++ 匹配
+? 匹配0次或者1次
+
+> s<-c('123abc\\456','abc123\\def123','')
+> grepl('.',s)
+[1]  TRUE  TRUE FALSE
+
+> s<-c('123abc\\456','abc123\\def123','')
+> grepl('6|f',s)
+[1]  TRUE  TRUE FALSE
+
+> grepl('^1',s) #以1开头的
+[1]  TRUE FALSE FALSE
+> grepl('6$',s) #以6结尾
+[1]  TRUE FALSE FALSE
+
+> s<-c('123abc\\456','abc123\\def123','abc456')
+> grepl('abc(.*)456',s) #abc和456中间出现任何一个字符，其出现0次或者1次以上
+[1]  TRUE FALSE  TRUE
+> grepl('[abc,456]',s)
+[1] TRUE TRUE TRUE
+
+> grepl('123{2}',s) #这里会把123{2}当成一个整体去查找
+[1] FALSE FALSE FALSE
+> grepl('[123]{2}',s) #前面要加中括号，表示123出现最多为2次（1/2）
+[1]  TRUE  TRUE FALSE
+> grepl('[456]+',s)
+[1]  TRUE FALSE  TRUE
+
+#stringr包 -- 处理字符串
+
+重要函数
+
+str_extract(x,pattern) 提取首个匹配模式的字符
+str_extract_all()提取所有模式的字符
+str_locate(x,pattern) 返回首个匹配模式的字符的位置
+str_replace(x,pattern,replace)替换首歌匹配模式
+str_replace_all()替换所有匹配模式
+str_split(x,pattern) 按照模式分割字符串
+str_split_fixed()按照模式将字符串分割成指定个数
+str_count(s,pattern)返回指定模式出现的次数
+
+> s
+[1] "123abc\\456"    "abc123\\def123" "abc456" 
+> str_extract(s,"[0-9]")
+[1] "1" "1" "4"
+> str_extract(s,"[0-9]+")
+[1] "123" "123" "456"
+> str_extract_all(s,"[0-9]")
+[[1]]
+[1] "1" "2" "3" "4" "5" "6"
+[[2]]
+[1] "1" "2" "3" "1" "2" "3"
+[[3]]
+[1] "4" "5" "6"
+
+> str_locate(s,'[0-9]')
+     start end
+[1,]     1   1
+[2,]     4   4
+[3,]     4   4       
+> str_locate(s,'[0-9]+')
+     start end
+[1,]     1   3
+[2,]     4   6
+[3,]     4   6
+
+> str_replace(s,'123','Q')
+[1] "Qabc\\456"    "abcQ\\def123" "abc456"      
+> str_replace_all(s,'123','Q')
+[1] "Qabc\\456"  "abcQ\\defQ" "abc456"
+
+> str_split(s,'abc')
+[[1]]
+[1] "123"   "\\456"
+[[2]]
+[1] ""            "123\\def123"
+[[3]]
+[1] ""    "456"
+
+> str_split_fixed(s,'abc',3)
+     [,1]  [,2]          [,3]
+[1,] "123" "\\456"       ""  
+[2,] ""    "123\\def123" ""  
+[3,] ""    "456"         ""  
+
+> str_count(s,'123')
+[1] 1 2 0
+
+
+##具体应用
+> str1<-c("工资3.0千/月","工资8.5千/月","1.05万/月")
+> str_extract_all(str1,"\\d+\\.+\\d+")
+[[1]]
+[1] "3.0"
+[[2]]
+[1] "8.5"
+[[3]]
+[1] "1.05"
+
+#其他
+str_sub(x,start,end)提取指定位置的字符
+str_dup(x,times)重复字符串
+str_length(x) 返回字符的长度
+str_trim()丢弃填充，如去掉字符前后的空格
+str_c()连接字符 == paste0()
+
+> A<-c('123')
+> str_dup(A,2)
+[1] "123123"
+
+> a<-c('   1   23   ')
+> str_trim(a)
+[1] "1   23"
+> str_c('123','456')
+[1] "123456"
