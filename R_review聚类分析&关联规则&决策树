@@ -1,0 +1,68 @@
+#k均值步骤
+1.随机选取k个数据点作为起始聚类中心
+2.按照距离最近原则分配数据点到对应类
+3.计算每类的数据点平均值（新的聚类中心）
+4.计算数据点到聚类中心总距离
+5.如果与上一次相比总距离下降，聚类中心替换
+6.直到总距离不再下降或者达到指定计算次数
+
+data<-rnorm(100)
+dat<-matrix(data,50,2)
+kc<-kmeans(dat,3)
+kc$centers #聚类中心及对应的坐标
+        [,1]       [,2]
+1  0.7621923 -0.6066578
+2 -0.9579295 -0.2921089
+3  0.4384360  1.2499562
+kc$cluster
+qplot(dat[,1],dat[,2],color=kc$cluster)
+
+MORE：http://blog.sina.com.cn/s/blog_7147f6870102vz97.html
+https://wenku.baidu.com/view/1f2590d9a0c7aa00b52acfc789eb172ded639920.html
+
+
+#协同过滤简单来说就是利用某兴趣相投，拥有共同经验之群体的喜好来推荐用户感兴趣的信息
+
+#关联规则
+交易记录  A B C D E F G
+1        1 1 1 1 0 0 0
+2        0 1 1 0 1 1 0
+3        1 0 1 0 0 0 1
+4        1 1 0 1 0 1 1
+5        0 0 1 0 1 0 1
+
+关联规则利用支持度，置信度，增益三个衡量指标来分别表示其显著性、正确性和价值。通过最小支持度和置信度作为对应门槛，然后才能进行下一步的增益价值的评估。
+
+支持度衡量前提项目（x）与结果项目（Y）一起出现的概率，支持度会把一些显著性小的去掉。
+置信度：前提项目（X）出现的情况下，结果（Y）出现的概率
+增益：增益衡量用于比较置信度与结果项目Y单独发生时两者大小，两者相除比较大小。如果大于1，表明前者较大，即x发生条件下Y发生概率变大。P（XY）/P(X)P(Y)
+
+R涉及package：arules arulesViz
+数据集：IncomeESL
+
+library(arules)
+library(arulesViz)
+data("IncomeESL")
+#检查缺失值，不缺失返回TRUE，最后去掉缺失值
+Income<-IncomeESL[complete.cases(IncomeESL),]
+#转换成可以进行关联规则分析的数据,关联规则分析必须使用transactions格式的数据，因此采用as()将data.frame数据转换为transactions对象
+dat<-as(Income,"transactions")
+#进行关联规则分析，支持度0.1，置信度0.6
+rules<-apriori(dat,parameter = list(support=0.1,confidence=0.6))
+summary(rules)
+plot(rules,method = 'scatterplot')
+#筛选出有自己房子显著（增益>1)的关联规则
+rulesOwn <- subset(rules, subset = rhs %in% "householder status=own" & lift > 1) 
+#lhs指的是==运算符左边的操作数（条件）；rhs指的是==运算符右边的操作数（结果）
+#%in%是精确匹配；%pin%是部分匹配，也就是说只要item like '%A%' or item like '%B%'；%ain%是完全匹配，也就是说itemset has ’A' and itemset has ‘B'​
+#列出其中支持度排前5的规则做进一步分析，按照support降序
+inspect(head(sort(rulesOwn, by = "support"), n = 5))
+#筛选出income大于40和小于40两部分 [40,50)== 7 [30,40) == 6
+Income[['income']]<-factor((as.numeric(Income[['income']])>6),labels = c('$40-','$40+'))
+Income <- as(Income, "transactions")
+rules <- apriori(Income, parameter = list(support = 0.2, confidence = 0.6))
+#RHS为{householder status=own}的显著（增益>1)规则
+rulesIncome <- subset(rules, subset = rhs %in% "income=$40+" & lift > 1)
+inspect(head(sort(rulesIncome, by = "support"),n=5)
+
+#决策树
