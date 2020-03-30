@@ -1,7 +1,32 @@
 DAY 1 review
 1. string也属于constant
-2
+2. reserved words : False, class, return, is, finally, None, if, for, lambda, continue, True, def, from, while, nonlocal, and,
+del, global, not, with, as, elif, try, or, yield, assert, else, import, pass, break, except, in, raise
+3. '+' means addition if something is a number and concatenate if something is a string
+4. when you put an integer and floating point in an expression, the integer is converted to floating
+5. integer division produces a floating point result (print(9/3) = 3.0) 
+6. __warning: TURN OFF Tabs__ python cars a lot about how far a line is indented. If you mix tabs and spaces, you may get 
+'indentation errors', even if everything looks fine.
+7. try/except structure (eliminate or catch traceback)
 
+'''
+raw = input('enter a number:')
+try:
+ i = int(raw)
+except:
+ i = -1
+
+if i > 0:
+ print('nice')
+else:
+ print('not a number')
+ 
+'''
+8. loops and iteration
+- The continue statement ends the current iteration and jumps to the top of the loop and starts the next iteration
+- The break statement ends the current loop and jumps to the statement immediately following the loop
+
+###########################################################################################################################
 
 #以#或者连续的三个单/双引号开始以及结束 == 注释
 
